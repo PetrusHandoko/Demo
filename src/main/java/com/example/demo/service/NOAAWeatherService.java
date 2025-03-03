@@ -38,18 +38,26 @@ public class NOAAWeatherService implements ExternalWeatherServiceApi{
             JSONObject jsonResponse = new JSONObject(responseData);
             JSONObject properties = jsonResponse.getJSONObject("properties");
             JSONObject temperature = properties.getJSONObject("temperature");
-            double current = (temperature.getString("value").equals("null"))? 0: temperature.getDouble("value");
+            double currentTemp = (temperature.getString("value").equals("null"))? -99: temperature.getDouble("value");
 
             temperature = properties.getJSONObject("minTemperatureLast24Hours");
-            double minTemperature = (temperature.getString("value").equals("null") )? 0: temperature.getDouble("value");
+            double minTemperature = (temperature.getString("value").equals("null") )? -99: temperature.getDouble("value");
 
             temperature = properties.getJSONObject("maxTemperatureLast24Hours");
-            double maxTemperature = (temperature.getString("value").equals("null") )? 0: temperature.getDouble("value");
+            double maxTemperature = (temperature.getString("value").equals("null") )? -99: temperature.getDouble("value");
             var description = properties.getString("textDescription");
-            return new WeatherDataInfo (current, minTemperature, maxTemperature, description) ;
+            return new WeatherDataInfo (toStringTemperature(currentTemp, true),
+                    toStringTemperature(minTemperature, true),
+                    toStringTemperature(maxTemperature, true), description) ;
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String toStringTemperature(double temperature, boolean isCelsius){
+        if ( temperature == -99 ) return "N/A";
+        if ( isCelsius ) temperature = (temperature * 9.0/5.0) + 32;
+        return String.format("%.1f", temperature);
     }
 
     protected String getObservationDataURL(String stationId ){
@@ -64,9 +72,8 @@ public class NOAAWeatherService implements ExternalWeatherServiceApi{
         String pointsUrl = String.format("https://api.weather.gov/points/%s,%s", location.getLeft(), location.getRight());
         // We could map directly using JSON mapper
 
-        String observationStationsURL = null ;
+        String observationStationsURL;
         String returnData = restTemplate.getForObject(pointsUrl, String.class);
-        //JSONObject properties = null;
         try {
             JSONObject jsonResponse = new JSONObject(returnData);
             var properties = jsonResponse.getJSONObject("properties");

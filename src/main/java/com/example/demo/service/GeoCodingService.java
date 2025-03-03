@@ -7,17 +7,14 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.web.client.RestTemplate;
 
 public interface GeoCodingService {
-    public Pair<Double, Double> getLocationFromAddress(USAddress address);
+    Pair<Double, Double> getLocationFromAddress(USAddress address);
 }
 
 @Service

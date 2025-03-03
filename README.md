@@ -18,7 +18,7 @@ These instructions will help you get a copy of the project up and running on you
 ### Prerequisites
 
 - Java 17 or higher (compatible with your development setup).
-- Maven or Gradle installed.
+- Maven installed.
 - An IDE (such as IntelliJ IDEA, Eclipse, or VS Code) is recommended.
 
 ### Installing
@@ -37,20 +37,12 @@ These instructions will help you get a copy of the project up and running on you
       ```bash
       mvn clean install
       ```
-    - For Gradle:
-      ```bash
-      ./gradlew build
-      ```
-
+    
 ### Running the Application
 
 1. Use the following command to run the application via Maven:
    ```bash
    mvn spring-boot:run
-   ```
-   Or for Gradle:
-   ```bash
-   ./gradlew bootRun
    ```
 
 2. Alternatively, you can run the application by executing the `main` method in the `DemoApplication` class from your IDE.

@@ -18,7 +18,7 @@ public interface GeoCodingService {
     Pair<Double, Double> getLocationFromAddress(USAddress address);
 }
 
-@Service
+@Service("MapQuest")
 class MapQuestGeoCodingAPIService implements GeoCodingService {
 
     private String API_KEY;
@@ -34,7 +34,7 @@ class MapQuestGeoCodingAPIService implements GeoCodingService {
 
     public MapQuestGeoCodingAPIService(DemoConfig appConfig, RestTemplateBuilder restTemplateBuilder) {
         API_KEY = appConfig.getMapQuestGeoCodingAPIKey();
-        GEOCODING_URL = "https://www.mapquestapi.com/geocoding/v1/address?key=" + API_KEY + "&location=";
+        GEOCODING_URL = "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?key=" + API_KEY + "&location=";
     }
 
     @Override
@@ -80,4 +80,60 @@ class MapQuestGeoCodingAPIService implements GeoCodingService {
         }
         return null;
     }
+}
+
+//------
+@Service("USCensus")
+class USCensusGovGeoCodingAPIService implements GeoCodingService {
+
+    private String GEOCODING_URL;
+
+    private static final Pair<Double, Double> SARATOGA = Pair.of(37.26736, -122.0284);
+
+    @Autowired
+    public RestTemplateBuilder restTemplateBuilder;
+
+    @Autowired
+    private DemoConfig appConfig;
+
+    public USCensusGovGeoCodingAPIService(DemoConfig appConfig, RestTemplateBuilder restTemplateBuilder) {
+        GEOCODING_URL = "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?benchmark=4&format=json&address=";
+//https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=4600+Silver+Hill+Rd%2C+Washington%2C+DC+20233&benchmark=4&format=json
+    }
+
+    @Override
+    public  Pair<Double, Double>  getLocationFromAddress(USAddress address) {
+        try {
+            return geocodeAddress(address.formattedAddress());
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        // Return default
+        return SARATOGA ;
+    }
+
+    private Pair<Double, Double> geocodeAddress(String address) throws IOException, JSONException {
+        String encodedAddress = address.replace(" ", "+");
+        String url = GEOCODING_URL + encodedAddress ;
+
+        RestTemplate restTemplate = restTemplateBuilder.build();
+
+        // We could map directly using JSON mapper
+        String returnData = restTemplate.getForObject(url, String.class);
+
+        JSONObject jsonResponse = new JSONObject(returnData);
+        var addresses = jsonResponse.getJSONObject("result").getJSONArray("addressMatches");
+
+        if (addresses.length() > 0) {
+            JSONObject addressesJSONObject = addresses.getJSONObject(0);
+            JSONObject location = addressesJSONObject.getJSONObject("coordinates");
+            Double latitude = (int)(location.getDouble("y")*10000)/10000.0;
+            Double longitude = (int)(location.getDouble("x")*10000)/10000.0;
+            return Pair.of(latitude, longitude);
+        }
+        return null;
+    }
+
+
+
 }

@@ -20,8 +20,8 @@ public interface GeoCodingService {
 @Service
 class MapQuestGeoCodingAPIService implements GeoCodingService {
 
-    private static final String API_KEY = "UuYY2hIbN0YHB0s6aPWrIwMZIQ0kjjc9";
-    private static final String GEOCODING_URL = "http://www.mapquestapi.com/geocoding/v1/address?key=" + API_KEY + "&location=";
+    private static final String API_KEY = "";
+    private static final String GEOCODING_URL = "https://www.mapquestapi.com/geocoding/v1/address?key=" + API_KEY + "&location=";
     private static final Pair<Double, Double> SARATOGA = Pair.of(37.26736, -122.0284);
 
     @Autowired
@@ -36,8 +36,8 @@ class MapQuestGeoCodingAPIService implements GeoCodingService {
         try {
             JSONObject location = geocodeAddress(address.formattedAddress());
             if (location != null) {
-                double latitude = location.getDouble("latitude") ;
-                double longitude = location.getDouble("longitude");
+                double latitude = location.getDouble("lat") ;
+                double longitude = location.getDouble("lng");
                 System.out.println("Latitude: " + latitude);
                 System.out.println("Longitude: " + longitude);
                 return Pair.of(latitude, longitude);

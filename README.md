@@ -29,7 +29,7 @@ These instructions will help you get a copy of the project up and running on you
    ```
 2. Navigate into the project directory:
    ```bash
-   cd demo-application
+   cd Demo
    ```
 3. Import the project into your favorite IDE.
 4. Ensure that dependencies are synced:

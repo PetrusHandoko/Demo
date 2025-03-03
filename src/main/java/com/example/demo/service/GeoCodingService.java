@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.config.DemoConfig;
 import com.example.demo.dto.USAddress;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +21,21 @@ public interface GeoCodingService {
 @Service
 class MapQuestGeoCodingAPIService implements GeoCodingService {
 
-    private static final String API_KEY = "";
-    private static final String GEOCODING_URL = "https://www.mapquestapi.com/geocoding/v1/address?key=" + API_KEY + "&location=";
+    private String API_KEY;
+    private String GEOCODING_URL;
+
     private static final Pair<Double, Double> SARATOGA = Pair.of(37.26736, -122.0284);
 
     @Autowired
     public RestTemplateBuilder restTemplateBuilder;
 
+    @Autowired
+    private DemoConfig appConfig;
+
+    public MapQuestGeoCodingAPIService(DemoConfig appConfig, RestTemplateBuilder restTemplateBuilder) {
+        API_KEY = appConfig.getMapQuestGeoCodingAPIKey();
+        GEOCODING_URL = "https://www.mapquestapi.com/geocoding/v1/address?key=" + API_KEY + "&location=";
+    }
 
     @Override
     public  Pair<Double, Double>  getLocationFromAddress(USAddress address) {

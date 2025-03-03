@@ -6,9 +6,11 @@ This is a **Spring Boot** application example.
 
 The Demo Application is a simple Spring Boot-based project designed to 
 demonstrate how to integrate with external weather service rest APIs.  
-The current implementations access NOAA weather service data. 
-It is also contains GeoCode service integrated with  MapQuest Service.  
+
+The current implementations access NOAA weather service data. It is also contains GeoCode service integrated with  MapQuest Service.  
 Note: You need to provide your own Map Quest API key
+
+Added a new geo code serive implementation that integrated with US Census API
 
 
 ## Getting Started

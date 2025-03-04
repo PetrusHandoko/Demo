@@ -6,24 +6,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "demo")
 public class DemoConfig {
-    private String MapQuestGeoCodingAPIKey;
 
-    public String getMapQuestGeoCodingAPIKey() {
-        return MapQuestGeoCodingAPIKey;
+    private String GeoCodingAPIBeanName;
+
+    public String getGeoCodingAPIBeanName() {
+        return GeoCodingAPIBeanName;
     }
 
-    public void setMapQuestGeoCodingAPIKey(String mapQuestGeoCodingAPIKey) {
-        MapQuestGeoCodingAPIKey = mapQuestGeoCodingAPIKey;
+    public void setGeoCodingAPIBeanName(String geoCodingAPIBeanName) {
+        GeoCodingAPIBeanName = geoCodingAPIBeanName;
     }
-
-    private String MapQuestBaseURL;
-
-    public String getMapQuestBaseURL() {
-        return MapQuestBaseURL;
-    }
-    public void setMapQuestBaseURL(String mapQuestBaseURL) {
-        MapQuestBaseURL = mapQuestBaseURL;
-    }
-
-
 }
+

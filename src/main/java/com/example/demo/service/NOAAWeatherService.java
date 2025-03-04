@@ -5,7 +5,6 @@ import com.example.demo.dto.WeatherDataInfo;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -20,7 +19,6 @@ public class NOAAWeatherService implements ExternalWeatherServiceApi{
     @Autowired RestTemplateBuilder restTemplateBuilder;
 
     @Autowired
-    @Qualifier( "USCensus")
     GeoCodingService geoCodingService;
 
     @Override

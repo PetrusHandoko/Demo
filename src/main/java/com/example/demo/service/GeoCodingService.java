@@ -1,9 +1,10 @@
 package com.example.demo.service;
 
-import com.example.demo.config.DemoConfig;
+import com.example.demo.config.DemoGeoCodingConfig;
 import com.example.demo.dto.USAddress;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.apache.commons.lang3.tuple.Pair;
@@ -19,6 +20,7 @@ public interface GeoCodingService {
 }
 
 @Service("MapQuest")
+@ConditionalOnProperty(value = "demo.GeoCodingAPIBeanName.MapQuest", havingValue = "true")
 class MapQuestGeoCodingAPIService implements GeoCodingService {
 
     private String API_KEY;
@@ -30,9 +32,9 @@ class MapQuestGeoCodingAPIService implements GeoCodingService {
     public RestTemplateBuilder restTemplateBuilder;
 
     @Autowired
-    private DemoConfig appConfig;
+    private DemoGeoCodingConfig appConfig;
 
-    public MapQuestGeoCodingAPIService(DemoConfig appConfig, RestTemplateBuilder restTemplateBuilder) {
+    public MapQuestGeoCodingAPIService(DemoGeoCodingConfig appConfig, RestTemplateBuilder restTemplateBuilder) {
         API_KEY = appConfig.getMapQuestGeoCodingAPIKey();
         GEOCODING_URL = "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?key=" + API_KEY + "&location=";
     }
@@ -84,6 +86,7 @@ class MapQuestGeoCodingAPIService implements GeoCodingService {
 
 //------
 @Service("USCensus")
+@ConditionalOnProperty(value = "demo.GeoCodingAPIBeanName.USCensus", havingValue = "true")
 class USCensusGovGeoCodingAPIService implements GeoCodingService {
 
     private String GEOCODING_URL;
@@ -93,12 +96,8 @@ class USCensusGovGeoCodingAPIService implements GeoCodingService {
     @Autowired
     public RestTemplateBuilder restTemplateBuilder;
 
-    @Autowired
-    private DemoConfig appConfig;
-
-    public USCensusGovGeoCodingAPIService(DemoConfig appConfig, RestTemplateBuilder restTemplateBuilder) {
-        GEOCODING_URL = "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?benchmark=4&format=json&address=";
-//https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=4600+Silver+Hill+Rd%2C+Washington%2C+DC+20233&benchmark=4&format=json
+    public USCensusGovGeoCodingAPIService(DemoGeoCodingConfig appConfig, RestTemplateBuilder restTemplateBuilder) {
+        GEOCODING_URL = appConfig.getUSCensusGovBaseURL();
     }
 
     @Override

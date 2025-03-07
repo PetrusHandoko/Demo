@@ -46,8 +46,13 @@ These instructions will help you get a copy of the project up and running on you
    ```bash
    mvn spring-boot:run
    ```
+2. On separate terminal window, use the following curl command to test
+   ```bash
+   curl -X POST -H "Content-Type:application/json" -d "{\"street\":\"1600 Pennsylvania Avenue NW\",\"city\":\"Washington\",\"state\":\"DC\",\"zipCode\":\"20500\"}" http://localhost:8080/weatherData
+   ```
 
-2. Alternatively, you can run the application by executing the `main` method in the `DemoApplication` class from your IDE.
+
+3. Alternatively, you can run the application by executing the `main` method in the `DemoApplication` class from your IDE.
 
 The application will start on **http://localhost:8080** by default.
 
